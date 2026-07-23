@@ -12,15 +12,16 @@ datasource db {
 }
 
 model Student {
-  id      String    @id @unique @default(cuid())
-  name    String
-  teacher Teacher[]
+  id        String  @id @unique @default(cuid())
+  name      String
+  imageUrl  String
+  teacher   Teacher @relation(fields: [teacherId], references: [id])
+  teacherId String
 }
 
 model Teacher {
-  id        String   @id @unique @default(cuid())
-  name      String
-  subject   String
-  student   Student? @relation(fields: [studentId], references: [id])
-  studentId String?
+  id       String    @id @unique @default(cuid())
+  name     String
+  subject  String
+  students Student[]
 }
