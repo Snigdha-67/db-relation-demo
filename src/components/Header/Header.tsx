@@ -1,5 +1,5 @@
 import Link from "next/link";
-import ThemeToggleButton from "../Buttons/ThemeToggleButton";
+import ThemeToggleButton from "../ThemeToggleButton";
 
 const Header = () => {
   return (
@@ -11,7 +11,7 @@ const Header = () => {
           <h1
             className="text-2xl font-semibold"
             aria-label="App Name">
-            NSF App
+            DB Relation
           </h1>
         </Link>
 
