@@ -1,6 +1,6 @@
 "use client";
 
-import { teacherFormSchema, TeacherFormType } from "@/lib/zodSchema";
+import { studentFormSchema, StudentFormType } from "@/lib/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderIcon, UserPlus2Icon } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "../shadcnui/select";
 
-const TeacherForm = () => {
+const StudentForm = () => {
   //   const { push } = useRouter();
 
   const {
@@ -25,18 +25,18 @@ const TeacherForm = () => {
     formState: { isSubmitting },
     reset,
   } = useForm({
-    resolver: zodResolver(teacherFormSchema),
+    resolver: zodResolver(studentFormSchema),
     defaultValues: {
       name: "",
-      subject: "",
+      teacherId: "",
     },
     mode: "all",
   });
 
-  const createTeacherFormHandler = async (ctfData: TeacherFormType) => {
+  const createStudentFormHandler = async (csfData: StudentFormType) => {
     await new Promise((r) => setTimeout(r, 1000));
 
-    console.log(ctfData);
+    console.log(csfData);
     reset();
 
     // const { isSuccess, messege } = await createUser(cfData);
@@ -52,7 +52,7 @@ const TeacherForm = () => {
 
   return (
     <form
-      onSubmit={handleSubmit(createTeacherFormHandler)}
+      onSubmit={handleSubmit(createStudentFormHandler)}
       className="grid gap-4"
       noValidate>
       <CardContent className="space-y-4">
@@ -76,14 +76,14 @@ const TeacherForm = () => {
         />
 
         <Controller
-          name="subject"
+          name="teacherId"
           control={control}
           render={({ field, fieldState }) => (
             <Field
               orientation="responsive"
               data-invalid={fieldState.invalid}>
               <FieldContent>
-                <FieldLabel>Subject</FieldLabel>
+                <FieldLabel>Teacher</FieldLabel>
               </FieldContent>
               <Select
                 name={field.name}
@@ -93,16 +93,10 @@ const TeacherForm = () => {
                   id={field.name}
                   aria-invalid={fieldState.invalid}
                   className="">
-                  <SelectValue placeholder="Select Subject" />
+                  <SelectValue placeholder="Select Teacher" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Programming">Programming</SelectItem>
-                  <SelectItem value="Bengali">Bengali</SelectItem>
-                  <SelectItem value="English">English</SelectItem>
-                  <SelectItem value="Geography">Geography</SelectItem>
-                  <SelectItem value="History">History 🚨 </SelectItem>
-                  <SelectItem value="Math">Math 🚨</SelectItem>
-                  <SelectItem value="Science">Science</SelectItem>
+                  <SelectItem value="name"> Kichu ekta</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -131,4 +125,4 @@ const TeacherForm = () => {
   );
 };
 
-export default TeacherForm;
+export default StudentForm;
