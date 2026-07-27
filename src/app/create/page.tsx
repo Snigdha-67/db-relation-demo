@@ -13,7 +13,7 @@ const page = () => {
     <section className="grid h-dvh place-items-center">
       <Card className="w-xs">
         <CardHeader>
-          <CardTitle className="text-center text-2xl">Student Loging</CardTitle>
+          <CardTitle className="text-center text-2xl">Student Login</CardTitle>
         </CardHeader>
 
         <Separator />
