@@ -1,9 +1,12 @@
 "use client";
 
 import { teacherFormSchema, TeacherFormType } from "@/lib/zodSchema";
+import { createTeacher } from "@/server/createTeacher";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderIcon, UserPlus2Icon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { Button } from "../shadcnui/button";
 import { CardContent, CardFooter } from "../shadcnui/card";
 import { Field, FieldContent, FieldError, FieldLabel } from "../shadcnui/field";
@@ -17,7 +20,7 @@ import {
 } from "../shadcnui/select";
 
 const TeacherForm = () => {
-  //   const { push } = useRouter();
+  const { push } = useRouter();
 
   const {
     handleSubmit,
@@ -36,18 +39,15 @@ const TeacherForm = () => {
   const createTeacherFormHandler = async (ctfData: TeacherFormType) => {
     await new Promise((r) => setTimeout(r, 1000));
 
-    console.log(ctfData);
-    reset();
+    const { isSuccess, messege } = await createTeacher(ctfData);
 
-    // const { isSuccess, messege } = await createUser(cfData);
-
-    // if (isSuccess) {
-    //   reset();
-    //   toast.success(messege);
-    //   push("/");
-    // } else {
-    //   toast.error(messege);
-    // }
+    if (isSuccess) {
+      reset();
+      toast.success(messege);
+      push("/create");
+    } else {
+      toast.error(messege);
+    }
   };
 
   return (

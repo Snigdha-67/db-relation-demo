@@ -5,7 +5,7 @@ export const teacherFormSchema = z.object({
     .string()
     .min(2, { error: "Too short. Enter at least 2 characters" })
     .max(12, { error: "Limit reached: 12 characters max" }),
-  subject: z.string().max(25, { error: "Subject Required" }),
+  subject: z.string().min(4, { error: "Subject Required" }),
 });
 
 export type TeacherFormType = z.infer<typeof teacherFormSchema>;
@@ -15,7 +15,7 @@ export const studentFormSchema = z.object({
     .string()
     .min(2, { error: "Too short. Enter at least 2 characters" })
     .max(12, { error: "Limit reached: 12 characters max" }),
-  teacherId: z.string(),
+  teacherId: z.string().min(4, { error: "Teacher Required" }),
 });
 
 export type StudentFormType = z.infer<typeof studentFormSchema>;

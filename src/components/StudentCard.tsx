@@ -15,7 +15,7 @@ const StudentCard = () => {
         </Avatar>
         <div className="text-3xl font-semibold">Student Name</div>
         <div className="flex items-center gap-2">
-          <span className="text-lg">Teacher Name (Math)</span>
+          <span className="text-lg">Teacher Name</span>
           <Badge
             variant="default"
             className="h-6 text-lg">
