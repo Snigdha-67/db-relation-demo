@@ -1,3 +1,4 @@
+import { StudentGetPayload } from "@generated/prisma/models";
 import { PenBoxIcon } from "lucide-react";
 import Link from "next/link";
 import DeleteButton from "./DeleteButton";
@@ -6,20 +7,28 @@ import { Badge } from "./shadcnui/badge";
 import { buttonVariants } from "./shadcnui/button";
 import { Card, CardContent, CardFooter } from "./shadcnui/card";
 
-const StudentCard = () => {
+type StudentCardProps = {
+  student: StudentGetPayload<{
+    include: {
+      teacher: true;
+    };
+  }>;
+};
+
+const StudentCard = ({ student }: StudentCardProps) => {
   return (
     <Card className="w-xs">
       <CardContent className="grid place-items-center gap-4">
         <Avatar className={"size-64"}>
           <AvatarImage src="https://placehold.co/600x400/png" />
         </Avatar>
-        <div className="text-3xl font-semibold">Student Name</div>
+        <div className="text-3xl font-semibold">{student.name}</div>
         <div className="flex items-center gap-2">
-          <span className="text-lg">Teacher Name</span>
+          <span className="text-lg">{student.teacher.name}</span>
           <Badge
             variant="default"
             className="h-6 text-lg">
-            badge
+            {student.teacher.subject}
           </Badge>
         </div>
       </CardContent>

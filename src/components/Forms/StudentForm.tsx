@@ -1,9 +1,13 @@
 "use client";
 
 import { studentFormSchema, StudentFormType } from "@/lib/zodSchema";
+import { createStudent } from "@/server/createStudent";
+import { Teacher } from "@generated/prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderIcon, UserPlus2Icon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { Button } from "../shadcnui/button";
 import { CardContent, CardFooter } from "../shadcnui/card";
 import { Field, FieldContent, FieldError, FieldLabel } from "../shadcnui/field";
@@ -16,8 +20,12 @@ import {
   SelectValue,
 } from "../shadcnui/select";
 
-const StudentForm = () => {
-  //   const { push } = useRouter();
+type StudentFormProps = {
+  teachers: Teacher[];
+};
+
+const StudentForm = ({ teachers }: StudentFormProps) => {
+  const { push } = useRouter();
 
   const {
     handleSubmit,
@@ -36,18 +44,15 @@ const StudentForm = () => {
   const createStudentFormHandler = async (csfData: StudentFormType) => {
     await new Promise((r) => setTimeout(r, 1000));
 
-    console.log(csfData);
-    reset();
+    const { isSuccess, messege } = await createStudent(csfData);
 
-    // const { isSuccess, messege } = await createUser(cfData);
-
-    // if (isSuccess) {
-    //   reset();
-    //   toast.success(messege);
-    //   push("/");
-    // } else {
-    //   toast.error(messege);
-    // }
+    if (isSuccess) {
+      reset();
+      toast.success(messege);
+      push("/");
+    } else {
+      toast.error(messege);
+    }
   };
 
   return (
@@ -88,15 +93,24 @@ const StudentForm = () => {
               <Select
                 name={field.name}
                 value={field.value}
-                onValueChange={field.onChange}>
+                onValueChange={field.onChange}
+                items={teachers.map((teacher) => ({
+                  label: teacher.name, // adjust to your schema field (e.g. teacher.fullName)
+                  value: String(teacher.id),
+                }))}>
                 <SelectTrigger
                   id={field.name}
-                  aria-invalid={fieldState.invalid}
-                  className="">
+                  aria-invalid={fieldState.invalid}>
                   <SelectValue placeholder="Select Teacher" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Kichu ekta">Kichu ekta</SelectItem>
+                  {teachers.map(({ id, name, subject }) => (
+                    <SelectItem
+                      key={id}
+                      value={id}>
+                      {name} ({subject})
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
 
