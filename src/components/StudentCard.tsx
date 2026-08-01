@@ -36,7 +36,7 @@ const StudentCard = ({ student }: StudentCardProps) => {
       <CardFooter className="grid grid-cols-2 gap-4">
         <DeleteButton />
         <Link
-          href={`/`}
+          href={`/${student.id}`}
           className={buttonVariants({ variant: "secondary", size: "lg" })}>
           <PenBoxIcon /> Edit
         </Link>
