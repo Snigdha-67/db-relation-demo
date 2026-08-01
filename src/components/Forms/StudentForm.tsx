@@ -6,8 +6,12 @@ import { Teacher } from "@generated/prisma/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderIcon, UserPlus2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
+import { useFilePicker } from "use-file-picker";
+import { FileSizeValidator } from "use-file-picker/validators";
+import { Avatar, AvatarImage } from "../shadcnui/avatar";
 import { Button } from "../shadcnui/button";
 import { CardContent, CardFooter } from "../shadcnui/card";
 import { Field, FieldContent, FieldError, FieldLabel } from "../shadcnui/field";
@@ -25,6 +29,8 @@ type StudentFormProps = {
 };
 
 const StudentForm = ({ teachers }: StudentFormProps) => {
+  const [isFile, setIsFile] = useState(false);
+
   const { push } = useRouter();
 
   const {
@@ -41,10 +47,21 @@ const StudentForm = ({ teachers }: StudentFormProps) => {
     mode: "all",
   });
 
+  const { openFilePicker, filesContent, plainFiles } = useFilePicker({
+    multiple: false,
+    accept: "image/*",
+    readAs: "DataURL",
+    validators: [
+      new FileSizeValidator({ maxFileSize: 5 * 1024 * 1024 /* 5 MB */ }),
+    ],
+    onFilesSuccessfullySelected: () => setIsFile(true),
+    onClear: () => setIsFile(false),
+  });
+
   const createStudentFormHandler = async (csfData: StudentFormType) => {
     await new Promise((r) => setTimeout(r, 1000));
 
-    const { isSuccess, messege } = await createStudent(csfData);
+    const { isSuccess, messege } = await createStudent(csfData, plainFiles[0]);
 
     if (isSuccess) {
       reset();
@@ -60,6 +77,29 @@ const StudentForm = ({ teachers }: StudentFormProps) => {
       onSubmit={handleSubmit(createStudentFormHandler)}
       className="grid gap-4"
       noValidate>
+      <div className="grid place-items-center">
+        {!isFile && (
+          <button
+            type="button"
+            onClick={openFilePicker}>
+            <Avatar className={"size-64"}>
+              <AvatarImage src="https://placehold.co/256/png" />
+            </Avatar>
+          </button>
+        )}
+
+        {filesContent.map(({ content, name }) => (
+          <button
+            key={name}
+            type="button"
+            onClick={openFilePicker}>
+            <Avatar className={"size-64"}>
+              <AvatarImage src={content} />
+            </Avatar>
+          </button>
+        ))}
+      </div>
+
       <CardContent className="space-y-4">
         <Controller
           name="name"
@@ -124,7 +164,7 @@ const StudentForm = ({ teachers }: StudentFormProps) => {
         <Button
           type="submit"
           className={"w-full"}
-          disabled={isSubmitting}>
+          disabled={isSubmitting || !isFile}>
           {isSubmitting ?
             <>
               <LoaderIcon className="animate-spin" /> Creating..

@@ -20,7 +20,7 @@ const StudentCard = ({ student }: StudentCardProps) => {
     <Card className="w-xs">
       <CardContent className="grid place-items-center gap-4">
         <Avatar className={"size-64"}>
-          <AvatarImage src="https://placehold.co/600x400/png" />
+          <AvatarImage src={student.imageUrl} />
         </Avatar>
         <div className="text-3xl font-semibold">{student.name}</div>
         <div className="flex items-center gap-2">

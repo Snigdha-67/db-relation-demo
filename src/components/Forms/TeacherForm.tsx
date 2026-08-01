@@ -100,8 +100,8 @@ const TeacherForm = () => {
                   <SelectItem value="Bengali">Bengali</SelectItem>
                   <SelectItem value="English">English</SelectItem>
                   <SelectItem value="Geography">Geography</SelectItem>
-                  <SelectItem value="History">History 🚨 </SelectItem>
-                  <SelectItem value="Math">Math 🚨</SelectItem>
+                  <SelectItem value="History 🚨">History 🚨 </SelectItem>
+                  <SelectItem value="Math 🚨">Math 🚨</SelectItem>
                   <SelectItem value="Science">Science</SelectItem>
                 </SelectContent>
               </Select>
