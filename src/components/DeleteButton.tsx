@@ -1,31 +1,37 @@
 "use client";
 
+import { deleteStudent } from "@/server/deleteStudent";
 import { LoaderIcon, Trash2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { Button } from "./shadcnui/button";
 
-// type DeleteButtonProps = {
-//   userId: string;
-// };
+type DeleteButtonProps = {
+  studentId: string;
+  studentImageUrl: string;
+};
 
-const DeleteButton = () => {
+const DeleteButton = ({ studentId, studentImageUrl }: DeleteButtonProps) => {
   const [loading, setLoading] = useState(false);
-  const {} = useRouter();
+  const { refresh } = useRouter();
 
   const deleteHandler = async () => {
     setLoading(true);
     await new Promise((r) => setTimeout(r, 1000));
 
-    // const { isSuccess, messege } = await deleteUser(userId);
+    const { isSuccess, messege } = await deleteStudent(
+      studentId,
+      studentImageUrl,
+    );
 
-    // if (isSuccess) {
-    //   toast.success(messege);
+    if (isSuccess) {
+      toast.success(messege);
 
-    //   refresh();
-    // } else {
-    //   toast.error(messege);
-    // }
+      refresh();
+    } else {
+      toast.error(messege);
+    }
 
     setLoading(false);
   };
