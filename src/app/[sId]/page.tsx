@@ -1,5 +1,11 @@
+import UpdateAvatar from "@/components/Forms/UpdateAvatar";
 import UpdateForm from "@/components/Forms/UpdateForm";
-import { Card, CardHeader, CardTitle } from "@/components/shadcnui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/shadcnui/card";
 import { Separator } from "@/components/shadcnui/separator";
 import prisma from "@/lib/database/dbClient";
 import { Metadata } from "next";
@@ -35,10 +41,14 @@ const page = async ({ params }: EditProps) => {
 
         <Separator />
 
-        <UpdateForm
-          sData={student}
-          teachers={allTeachers}
-        />
+        <CardContent className="space-y-4">
+          <UpdateAvatar sData={student} />
+
+          <UpdateForm
+            sData={student}
+            teachers={allTeachers}
+          />
+        </CardContent>
       </Card>
     </section>
   );

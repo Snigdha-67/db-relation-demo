@@ -3,32 +3,28 @@
 import prisma from "@/lib/database/dbClient";
 import { StudentFormType } from "@/lib/zodSchema";
 import { revalidatePath } from "next/cache";
-import { rm } from "node:fs/promises";
-import sharp from "sharp";
 
 export const editStudent = async (
   studentId: string,
-  prevImageUrl: string,
   usfData: StudentFormType,
-  avatarImg: File,
 ) => {
   try {
-    await rm(`./public${prevImageUrl}`);
+    // await rm(`./public${prevImageUrl}`);
 
-    const imageName = `${crypto.randomUUID()}.jpeg`;
+    // const imageName = `${crypto.randomUUID()}.jpeg`;
 
-    await sharp(await avatarImg.arrayBuffer())
-      .resize({
-        width: 256,
-        height: 256,
-      })
-      .jpeg({
-        mozjpeg: true,
-        quality: 97,
-      })
-      .toFile(`./public/uploads/${imageName}`);
+    // await sharp(await avatarImg.arrayBuffer())
+    //   .resize({
+    //     width: 256,
+    //     height: 256,
+    //   })
+    //   .jpeg({
+    //     mozjpeg: true,
+    //     quality: 97,
+    //   })
+    //   .toFile(`./public/uploads/${imageName}`);
 
-    const imageUrl = `/uploads/${imageName}`;
+    // const imageUrl = `/uploads/${imageName}`;
 
     await prisma.student.update({
       where: {
@@ -37,7 +33,7 @@ export const editStudent = async (
       data: {
         name: usfData.name,
         teacherId: usfData.teacherId,
-        imageUrl: imageUrl,
+        // imageUrl: imageUrl,
       },
     });
 
